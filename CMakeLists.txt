@@ -27,6 +27,8 @@ FetchContent_Declare(
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE  # <--- Fixes the warning
 )
 
+
+
 # For Windows: Prevent override of compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest) # <--- MUST come BEFORE target_link_libraries uses it
@@ -52,3 +54,19 @@ target_link_libraries(BlockChainTests PRIVATE gtest_main)
 # Register the test with CMake
 include(GoogleTest)
 gtest_discover_tests(BlockChainTests)
+
+FetchContent_Declare(
+  leveldb
+  URL https://github.com/google/leveldb/archive/refs/tags/1.23.zip
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+
+# LevelDB options (disable benchmarks/tests to build faster)
+set(LEVELDB_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(LEVELDB_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(leveldb)
+
+# Link leveldb to your targets
+target_link_libraries(BlockChain PRIVATE leveldb)
+target_link_libraries(BlockChainTests PRIVATE leveldb)

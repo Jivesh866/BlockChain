@@ -2,6 +2,7 @@
 #include "block.h"
 #include "transaction.h"
 #include "blockchain.h"
+#include <leveldb/db.h>
 
 // Test Transaction properties and string representation
 TEST(TransactionTest, CreationAndSerialization) {
@@ -55,32 +56,52 @@ TEST(BlockchainTest, GenesisBlockInitialization) {
 // Test adding new blocks to the chain
 TEST(BlockchainTest, AddMultipleBlocks) {
     BlockChain chain;
+    leveldb::DB* db;
+    leveldb::Options options;
     
+    options.create_if_missing = true;
+    
+    leveldb::Status status = leveldb::DB::Open(options, "./blockchain", &db);
+    
+    if (!status.ok()) {
+        std::cerr << "Failed to open LevelDB: " << status.ToString() << std::endl;
+    }
+
     std::vector<Transaction> txs1;
     txs1.emplace_back("User1", "User2", 10.0);
-    chain.addBlock(txs1);
+    chain.createBlock(txs1,db);
 
     EXPECT_EQ(chain.getLatestIndex(), 1);
 
     std::vector<Transaction> txs2;
     txs2.emplace_back("User2", "User3", 5.0);
-    chain.addBlock(txs2);
+    chain.createBlock(txs2,db);
 
     EXPECT_EQ(chain.getLatestIndex(), 2);
     EXPECT_TRUE(chain.isChainValid());
+    delete db;
 }
 
 // Test that tampering with a block breaks chain validity
 TEST(BlockchainTest, ChainTamperingDetection) {
     BlockChain chain;
+    leveldb::DB* db;
+    leveldb::Options options;
     
+    options.create_if_missing = true;
+    
+    leveldb::Status status = leveldb::DB::Open(options, "./blockchain", &db);
+    
+    if (!status.ok()) {
+        std::cerr << "Failed to open LevelDB: " << status.ToString() << std::endl;
+    }
     std::vector<Transaction> txs1;
     txs1.emplace_back("Alice", "Bob", 50.0);
-    chain.addBlock(txs1);
+    chain.createBlock(txs1,db);
 
     std::vector<Transaction> txs2;
     txs2.emplace_back("Bob", "Charlie", 20.0);
-    chain.addBlock(txs2);
+    chain.createBlock(txs2,db);
 
     // Verify initial valid state
     EXPECT_TRUE(chain.isChainValid());
@@ -90,4 +111,5 @@ TEST(BlockchainTest, ChainTamperingDetection) {
     // Note: Since blocks are private in BlockChain, we test validation consistency 
     // by ensuring a pristine chain returns true.
     EXPECT_TRUE(chain.isChainValid());
+    delete db;
 }

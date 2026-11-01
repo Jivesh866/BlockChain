@@ -2,20 +2,27 @@
 #include "block.h"
 #include <vector>
 #include "transaction.h"
+#include <leveldb/db.h>
 
 class BlockChain
 {
-private:\
+private:
     vector<Block> blocks;
     uint32_t difficulty = 3;
 
 public:
     BlockChain();
-    void addBlock(vector<Transaction> transactions);
-    Block* getLatestBlock() { return &blocks[getLatestIndex()] ; };
-    int getLatestIndex() { 
-        return blocks.size() - 1; 
+    BlockChain(bool isEmpty);
+    BlockChain(Block& block);
+
+    void createBlock(vector<Transaction> transactions, leveldb::DB *db);
+    void addBlock(Block& block);
+    Block *getLatestBlock() { return &blocks[getLatestIndex()]; };
+    void printBlockChain();
+    int getLatestIndex()
+    {
+        return blocks.size() - 1;
     }
-    Block* getBlockAtIndex(int index);
+    Block *getBlockAtIndex(int index);
     bool isChainValid();
 };

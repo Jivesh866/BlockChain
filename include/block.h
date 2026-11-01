@@ -1,18 +1,18 @@
 #pragma once
 #include <transaction.h>
 #include <vector>
-#include <picosha2/picosha2.h>
+#include "picosha2/picosha2.h"
 
 using namespace std;
 
 class Block{
     private:
-        int index;
-        int64_t timestamp;
-        vector<Transaction> transactions;
-        string previousHash;
-        string Hash;
-        int nonce;
+    int index;
+    int64_t timestamp;
+    vector<Transaction> transactions;
+    string previousHash;
+    string Hash;
+    int nonce;
 
     string calcCurrentHash();
     public:

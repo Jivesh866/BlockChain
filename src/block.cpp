@@ -1,5 +1,5 @@
-#include <picosha2/picosha2.h>
-#include <block.h>
+#include "picosha2/picosha2.h"
+#include "block.h"
 #include <iostream>
 #include <sstream>
 #include <chrono>
@@ -42,7 +42,6 @@ Block::Block(int newIndex, string &prevHash, vector<Transaction> &transactions)
 };
 
 void Block::mineBlock(uint32_t difficulty) {
-        // Create a target string with 'difficulty' number of leading zeros (e.g., "000")
         std::string target(difficulty, '0');
 
         cout << "Mining block " << index << "...\n";

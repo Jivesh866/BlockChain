@@ -11,13 +11,9 @@ int main(){
     std::vector<Transaction> txList;
     txList.push_back(Transaction("Alice", "Bob", 50.0));
     BlockChain chain;
-    cout << chain.getLatestIndex() <<endl;
-    cout << chain.getLatestBlock();
 
     chain.addBlock(txList);
 
-    cout << chain.getLatestIndex() <<endl;
-    cout << chain.getLatestBlock();
 
     std::vector<Transaction> txList2;
     txList2.push_back(Transaction("Charlie", "Dave", 10.5));
@@ -26,8 +22,7 @@ int main(){
 
     chain.addBlock(txList2);
 
-    cout << chain.getLatestIndex() <<endl;
-    cout << chain.getLatestBlock();
     
+    cout<<chain.isChainValid();
     return 0;
 }

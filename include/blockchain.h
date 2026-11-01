@@ -16,5 +16,6 @@ public:
     int getLatestIndex() { 
         return blocks.size() - 1; 
     }
+    Block* getBlockAtIndex(int index);
     bool isChainValid();
 };

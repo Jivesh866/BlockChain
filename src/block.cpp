@@ -7,6 +7,8 @@
 using namespace std;
 // Private Implementations
 
+// Public Implementations
+
 string Block::calcCurrentHash()
 {
     std::stringstream ss;
@@ -27,7 +29,6 @@ string Block::calcCurrentHash()
     return hex_str;
 }
 
-// Public Implementations
 
 Block::Block(int newIndex, string &prevHash, vector<Transaction> &transactions)
 {

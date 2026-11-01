@@ -14,8 +14,8 @@ class Block{
     string Hash;
     int nonce;
 
-    string calcCurrentHash();
     public:
+    string calcCurrentHash();
     Block(int newIndex, string& prevHash, vector<Transaction>& transactions);
 
     std::string getHash() const { return Hash; }
